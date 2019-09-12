@@ -4,6 +4,7 @@ import { Alert, PageSection } from '@patternfly/react-core';
 import { DynamicImport } from '@app/DynamicImport';
 import { accessibleRouteChangeHandler } from '@app/utils/utils';
 import { Dashboard } from '@app/Dashboard/Dashboard';
+import { PlanetList } from '@app/PlanetList/PlanetList';
 import { NotFound } from '@app/NotFound/NotFound';
 import DocumentTitle from 'react-document-title';
 import { LastLocationProvider, useLastLocation } from 'react-router-last-location';
@@ -76,6 +77,14 @@ const routes: IAppRoute[] = [
     label: 'Dashboard',
     path: '/',
     title: 'Main Dashboard Title'
+  },
+  {
+    component: PlanetList,
+    exact: true,
+    icon: null,
+    label: 'Planets',
+    path: '/planets',
+    title: 'Planet List'
   },
   {
     component: Support,
