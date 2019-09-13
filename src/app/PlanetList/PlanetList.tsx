@@ -5,14 +5,22 @@ import axios from "axios";
 
 const PlanetList: React.FunctionComponent<any> = (props) => {
     const [planets, getPlanets] = useState<Array<any>>([]);
+    let signal = axios.CancelToken.source();
     useEffect(() => {
         axios
-          .get("https://swapi.co/api/planets")
+          .get("https://swapi.co/api/planets",{
+            cancelToken: signal.token,
+          })
           .then(({ data }) => {
             console.log(data);
             getPlanets(data.results);
           });
     }, []);
+    useEffect(() => {
+        return () => {
+            signal.cancel();
+        }
+    }, []);      
     return (
         <PageSection>
             <DataList aria-label="Planet List">
