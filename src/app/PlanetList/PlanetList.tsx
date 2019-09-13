@@ -1,33 +1,69 @@
 import React, { useState, useEffect } from 'react';
-import { PageSection, DataList } from '@patternfly/react-core';
+import { Pagination, PaginationVariant, DataList, PageSection } from '@patternfly/react-core';
 import { Planet } from '../Planet/Planet';
 import axios from "axios";
+import queryString from "query-string";
 
 const PlanetList: React.FunctionComponent<any> = (props) => {
-    const [planets, getPlanets] = useState<Array<any>>([]);
-    let signal = axios.CancelToken.source();
-    useEffect(() => {
+    const [page, setPage] = useState(1);
+    const [perPage, perPageSelect] = useState(10);
+    const [planets, setPlanets] = useState<Array<any>>([]);
+    const signal = axios.CancelToken.source();
+
+    const onSetPage = (_event: any, pageNumber: number) => {
+        console.log(pageNumber);
         axios
-          .get("https://swapi.co/api/planets",{
-            cancelToken: signal.token,
-          })
-          .then(({ data }) => {
-            console.log(data);
-            getPlanets(data.results);
-          });
+            .get("https://swapi.co/api/planets/?page=" + pageNumber, {
+                cancelToken: signal.token,
+            })
+            .then(({ data }) => {
+                console.log(data);
+                setPlanets(data.results);
+                setPage(pageNumber);
+                props.history.push('/planets?page=' + pageNumber);
+            });
+
+    }
+    const onPerPageSelect = (_event: any, perPage: number) => perPageSelect(perPage);
+
+    useEffect(() => {
+        const pageNo = queryString.parse(props.location.search).page || 1;
+        let url = "https://swapi.co/api/planets"
+        if (pageNo) {
+            url = "https://swapi.co/api/planets/?page=" + pageNo;
+        }
+        axios
+            .get(url, {
+                cancelToken: signal.token,
+            })
+            .then(({ data }) => {
+                console.log(data);
+                setPage(Number(pageNo));
+                setPlanets(data.results);
+            });
     }, []);
     useEffect(() => {
         return () => {
             signal.cancel();
         }
-    }, []);      
+    }, []);
     return (
         <PageSection>
+            <Pagination
+                itemCount={61}
+                perPage={perPage}
+                page={page}
+                perPageOptions={[{ title: '10', value: 10 }]}
+                onSetPage={onSetPage}
+                variant={PaginationVariant.bottom}
+                widgetId="pagination-options-menu-top"
+                onPerPageSelect={onPerPageSelect}
+            />
             <DataList aria-label="Planet List">
-                { planets.map((planet:any,index:number) => <Planet planet={planet} key={index}/>) }
+                {planets.map((planet: any, index: number) => <Planet planet={planet} key={index} />)}
             </DataList>
         </PageSection>
     );
 }
-  
+
 export { PlanetList };
