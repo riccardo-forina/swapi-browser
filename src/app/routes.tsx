@@ -5,6 +5,7 @@ import { DynamicImport } from '@app/DynamicImport';
 import { accessibleRouteChangeHandler } from '@app/utils/utils';
 import { Dashboard } from '@app/Dashboard/Dashboard';
 import { NotFound } from '@app/NotFound/NotFound';
+import { PlanetListing } from '@app/Planets/PlanetListing';
 import DocumentTitle from 'react-document-title';
 import { LastLocationProvider, useLastLocation } from 'react-router-last-location';
 let routeFocusTimer: number;
@@ -69,22 +70,31 @@ export interface IAppRoute {
 }
 
 const routes: IAppRoute[] = [
+  // {
+  //   component: Dashboard,
+  //   exact: true,
+  //   icon: null,
+  //   label: 'Dashboard',
+  //   path: '/',
+  //   title: 'Main Dashboard Title'
+  // },
+  // {
+  //   component: Support,
+  //   exact: true,
+  //   icon: null,
+  //   isAsync: true,
+  //   label: 'Support',
+  //   path: '/support',
+  //   title: 'Support Page Title'
+  // },
   {
-    component: Dashboard,
-    exact: true,
-    icon: null,
-    label: 'Dashboard',
-    path: '/',
-    title: 'Main Dashboard Title'
-  },
-  {
-    component: Support,
+    component: PlanetListing,
     exact: true,
     icon: null,
     isAsync: true,
-    label: 'Support',
-    path: '/support',
-    title: 'Support Page Title'
+    label: 'PlanetListing',
+    path: '/planetlisting',
+    title: 'Planet Listings'
   }
 ];
 

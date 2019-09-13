@@ -16,7 +16,7 @@ interface IAppLayout {
   children: React.ReactNode;
 }
 
-const AppLayout: React.FunctionComponent<IAppLayout> = ({children}) => {
+const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
   const logoProps = {
     href: '/',
     target: '_blank'
@@ -29,15 +29,15 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({children}) => {
   };
   const onNavToggle = () => {
     setIsNavOpen(!isNavOpen);
-  }
+  };
   const onPageResize = (props: { mobileView: boolean; windowSize: number }) => {
     setIsMobileView(props.mobileView);
   };
   const Header = (
     <PageHeader
-      logo="Patternfly"
+      logo="Star War Planets"
       logoProps={logoProps}
-      toolbar="Toolbar"
+      // toolbar="Toolbar"
       showNavToggle={true}
       isNavOpen={isNavOpen}
       onNavToggle={isMobileView ? onNavToggleMobile : onNavToggle}
@@ -50,33 +50,28 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({children}) => {
         {routes.map((route, idx) => {
           return (
             <NavItem key={`${route.label}-${idx}`} id={`${route.label}-${idx}`}>
-              <NavLink exact={true} to={route.path} activeClassName="pf-m-current">{route.label}</NavLink>
+              <NavLink exact={true} to={route.path} activeClassName="pf-m-current">
+                {route.label}
+              </NavLink>
             </NavItem>
           );
         })}
       </NavList>
     </Nav>
   );
-  const Sidebar = (
-    <PageSidebar
-      nav={Navigation}
-      isNavOpen={isMobileView ? isNavOpenMobile : isNavOpen} />
-  );
-  const PageSkipToContent = (
-    <SkipToContent href="#primary-app-container">
-      Skip to Content
-    </SkipToContent>
-  );
+  const Sidebar = <PageSidebar nav={Navigation} isNavOpen={isMobileView ? isNavOpenMobile : isNavOpen} />;
+  const PageSkipToContent = <SkipToContent href="#primary-app-container">Skip to Content</SkipToContent>;
   return (
     <Page
       mainContainerId="primary-app-container"
       header={Header}
       sidebar={Sidebar}
       onPageResize={onPageResize}
-      skipToContent={PageSkipToContent}>
+      skipToContent={PageSkipToContent}
+    >
       {children}
     </Page>
   );
-}
+};
 
 export { AppLayout };
