@@ -5,7 +5,7 @@ import { DynamicImport } from '@app/DynamicImport';
 import { accessibleRouteChangeHandler } from '@app/utils/utils';
 import { Dashboard } from '@app/Dashboard/Dashboard';
 import { NotFound } from '@app/NotFound/NotFound';
-import { PlanetListing } from '@app/Planets/PlanetListing';
+import { Home } from '@app/Planets/Home';
 import DocumentTitle from 'react-document-title';
 import { LastLocationProvider, useLastLocation } from 'react-router-last-location';
 let routeFocusTimer: number;
@@ -88,13 +88,13 @@ const routes: IAppRoute[] = [
   //   title: 'Support Page Title'
   // },
   {
-    component: PlanetListing,
+    component: Home,
     exact: true,
     icon: null,
     isAsync: true,
-    label: 'PlanetListing',
-    path: '/planetlisting',
-    title: 'Planet Listings'
+    label: 'Planets',
+    path: '/Home',
+    title: 'Planet Listings Home'
   }
 ];
 
