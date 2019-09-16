@@ -11,54 +11,20 @@ import {
   TextContent,
   TextListItem
 } from '@patternfly/react-core';
-import usePlanetService from '../Service/usePlanetService';
+import { IPlanet } from '@app/Types/Planet';
+import { PlanetListItem } from './PlanestListItem';
 
-export interface IProps {
-  url: string;
+export interface IPlanetListingProps {
+  planets: IPlanet[];
 }
 
-const PlanetListing: React.FC<IProps> = ({ url }) => {
-  const service = usePlanetService(url);
-  let [isOpen, setOpen] = useState<boolean>(false);
-
+const PlanetListing: React.FC<IPlanetListingProps> = ({ planets }) => {
   return (
-    <React.Fragment>
-      {service.status === 'loading' && <div>Loading...</div>}
-      <DataList aria-label="Expandable data list example">
-        {service.status === 'loaded' &&
-          service.payload.results.map((planet, index) => (
-            <DataListItem key={index} aria-labelledby="ex-item1" isExpanded={isOpen}>
-              <DataListItemRow>
-                <DataListToggle
-                  onClick={() => setOpen(!isOpen)}
-                  isExpanded={isOpen}
-                  id="ex-toggle1"
-                  aria-controls="ex-expand1"
-                />
-                <DataListItemCells
-                  dataListCells={[
-                    <DataListCell key="primary content">
-                      <div id="ex-item1">{planet.name}</div>
-                    </DataListCell>,
-                    <DataListCell key="secondary content 2">
-                      <span>{planet.population}</span>
-                    </DataListCell>
-                  ]}
-                />
-              </DataListItemRow>
-              <DataListContent aria-label="Primary Content Details" id="ex-expand1" isHidden={!isOpen}>
-                <TextContent>
-                  <TextList>
-                    {planet.films.map((film, index) => (
-                      <TextListItem key={index}>{film}</TextListItem>
-                    ))}
-                  </TextList>
-                </TextContent>
-              </DataListContent>
-            </DataListItem>
-          ))}
-      </DataList>
-    </React.Fragment>
+    <DataList aria-label="Expandable data list example">
+      {planets.map((planet, index) => (
+        <PlanetListItem key={index} planet={planet} />
+      ))}
+    </DataList>
   );
 };
 export { PlanetListing };

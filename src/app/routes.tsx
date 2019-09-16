@@ -70,14 +70,14 @@ export interface IAppRoute {
 }
 
 const routes: IAppRoute[] = [
-  // {
-  //   component: Dashboard,
-  //   exact: true,
-  //   icon: null,
-  //   label: 'Dashboard',
-  //   path: '/',
-  //   title: 'Main Dashboard Title'
-  // },
+  {
+    component: Dashboard,
+    exact: true,
+    icon: null,
+    label: 'Dashboard',
+    path: '/',
+    title: 'Main Dashboard Title'
+  },
   // {
   //   component: Support,
   //   exact: true,

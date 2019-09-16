@@ -1,30 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { PageSection, Pagination, PaginationVariant } from '@patternfly/react-core';
 import { History } from 'history';
 import { PlanetListing } from '../Planets/PlanetListing';
 import queryString from 'query-string';
+import usePlanetsService from '@app/Service/usePlanetService';
 
 interface IPath {
   history: History;
 }
 
 const Home: React.FC<IPath> = ({ history }) => {
-  const pageParam = parseInt(Object.keys(queryString.parse(history.location.search))[0]);
-  const currentPage = pageParam || 1;
-  const apiPath = 'https://swapi.co/api/planets/?page=';
-  const [url, setUrl] = React.useState(apiPath + currentPage);
-  const [page, setPage] = React.useState(currentPage);
   const [perPage, setPerPage] = useState(10);
+
+  const pageParam = parseInt(Object.keys(queryString.parse(history.location.search))[0]);
+  const { result, page } = usePlanetsService(pageParam);
+
+  const [itemCount, setItemCount] = useState(0);
+  useEffect(() => {
+    if (result.status === 'loaded') {
+      setItemCount(result.payload.count);
+    }
+  }, [result, setItemCount]);
 
   return (
     <PageSection>
       <Pagination
-        itemCount={61} //Remove hardcoding and fetch item count from API
+        itemCount={itemCount}
         page={page}
         perPage={perPage}
         onSetPage={(_evt, value) => {
-          setPage(value);
-          setUrl(apiPath + value);
           history.push({ pathname: '/Home', search: '?' + value });
         }}
         onPerPageSelect={(_evt, value) => {
@@ -32,7 +36,10 @@ const Home: React.FC<IPath> = ({ history }) => {
         }}
         variant={PaginationVariant.top}
       />
-      <PlanetListing url={url} />
+      {result.status === 'loaded' && 
+        <PlanetListing planets={result.payload.results} />
+      }
+      {result.status !== 'loaded' && result.status}
     </PageSection>
   );
 };
