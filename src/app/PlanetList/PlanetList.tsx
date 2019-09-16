@@ -8,21 +8,14 @@ const PlanetList: React.FunctionComponent<any> = (props) => {
     const [page, setPage] = useState(1);
     const [perPage, perPageSelect] = useState(10);
     const [planets, setPlanets] = useState<Array<any>>([]);
+    const [url, setUrl] = useState("");
     const signal = axios.CancelToken.source();
 
     const onSetPage = (_event: any, pageNumber: number) => {
         console.log(pageNumber);
-        axios
-            .get("https://swapi.co/api/planets/?page=" + pageNumber, {
-                cancelToken: signal.token,
-            })
-            .then(({ data }) => {
-                console.log(data);
-                setPlanets(data.results);
-                setPage(pageNumber);
-                props.history.push('/planets?page=' + pageNumber);
-            });
-
+        setUrl("https://swapi.co/api/planets/?page=" + pageNumber);
+        setPage(pageNumber);
+        props.history.push('/planets?page=' + pageNumber);
     }
     const onPerPageSelect = (_event: any, perPage: number) => perPageSelect(perPage);
 
@@ -41,7 +34,7 @@ const PlanetList: React.FunctionComponent<any> = (props) => {
                 setPage(Number(pageNo));
                 setPlanets(data.results);
             });
-    }, []);
+    }, [url]);
     useEffect(() => {
         return () => {
             signal.cancel();
