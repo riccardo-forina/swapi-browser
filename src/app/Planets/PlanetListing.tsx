@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  PageSection,
   DataList,
   DataListItem,
   DataListItemRow,
@@ -14,13 +13,17 @@ import {
 } from '@patternfly/react-core';
 import usePlanetService from '../Service/usePlanetService';
 
-const PlanetListing: React.FC<{}> = () => {
-  const service = usePlanetService();
-  let [isOpen, setOpen] = useState<boolean>(false);
-  return (
-    <PageSection>
-      {service.status === 'loading' && <div>Loading...</div>}
+export interface IProps {
+  url: string;
+}
 
+const PlanetListing: React.FC<IProps> = ({ url }) => {
+  const service = usePlanetService(url);
+  let [isOpen, setOpen] = useState<boolean>(false);
+
+  return (
+    <React.Fragment>
+      {service.status === 'loading' && <div>Loading...</div>}
       <DataList aria-label="Expandable data list example">
         {service.status === 'loaded' &&
           service.payload.results.map((planet, index) => (
@@ -55,8 +58,7 @@ const PlanetListing: React.FC<{}> = () => {
             </DataListItem>
           ))}
       </DataList>
-    </PageSection>
+    </React.Fragment>
   );
 };
-
 export { PlanetListing };
