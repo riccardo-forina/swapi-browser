@@ -9,9 +9,10 @@ export interface IPlanetsApiResponse {
   results: IPlanet[];
 }
 
-const usePlanetsService = (page: number) => {
+const usePlanetsService = (page: number, pageId: number) => {
   page = page || 1;
-  const url = `https://swapi.co/api/planets/?page=${page}`;
+  const url = pageId > 0 ? `https://swapi.co/api/planets/${pageId}` : `https://swapi.co/api/planets/?page=${page}`;
+
   const [result, setResult] = useState<Service<IPlanetsApiResponse>>({
     status: 'loading'
   });
