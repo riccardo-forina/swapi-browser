@@ -6,6 +6,7 @@ import { accessibleRouteChangeHandler } from '@app/utils/utils';
 import { Dashboard } from '@app/Dashboard/Dashboard';
 import { NotFound } from '@app/NotFound/NotFound';
 import { Home } from '@app/Planets/Home';
+import { PlanetsListItemDetail } from '@app/Planets/PlanetsListItemDetail';
 import DocumentTitle from 'react-document-title';
 import { LastLocationProvider, useLastLocation } from 'react-router-last-location';
 let routeFocusTimer: number;
@@ -112,7 +113,16 @@ const AppRoutes = () => (
           isAsync={isAsync}
         />
       ))}
-      <RouteWithTitleUpdates component={NotFound} title={'404 Page Not Found'} />
+      {/* <RouteWithTitleUpdates component={NotFound} title={'404 Page Not Found'} /> */}
+      <RouteWithTitleUpdates
+        component={PlanetsListItemDetail}
+        exact={true}
+        icon={null}
+        isAsync={true}
+        label="Planet Details"
+        path="/PlanetDetails/:id"
+        title="Planet Details"
+      />
     </Switch>
   </LastLocationProvider>
 );
