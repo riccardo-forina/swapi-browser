@@ -1,28 +1,19 @@
-import React, { useState } from 'react';
-import {
-  DataList,
-  DataListItem,
-  DataListItemRow,
-  DataListCell,
-  DataListToggle,
-  DataListContent,
-  DataListItemCells,
-  TextList,
-  TextContent,
-  TextListItem
-} from '@patternfly/react-core';
+import React from 'react';
+import { DataList } from '@patternfly/react-core';
 import { IPlanet } from '@app/Types/Planet';
 import { PlanetListItem } from './PlanestListItem';
+import { History } from 'history';
 
 export interface IPlanetListingProps {
   planets: IPlanet[];
+  history: History;
 }
 
-const PlanetListing: React.FC<IPlanetListingProps> = ({ planets }) => {
+const PlanetListing: React.FC<IPlanetListingProps> = ({ planets, history }) => {
   return (
     <DataList aria-label="Expandable data list example">
       {planets.map((planet, index) => (
-        <PlanetListItem key={index} planet={planet} />
+        <PlanetListItem key={index} planet={planet} history={history} />
       ))}
     </DataList>
   );
