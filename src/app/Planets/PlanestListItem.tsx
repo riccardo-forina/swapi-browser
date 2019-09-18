@@ -1,23 +1,29 @@
 import * as React from 'react';
-import { IPlanet } from "@app/Types/Planet";
-import { DataListItem, DataListItemRow, DataListToggle, DataListItemCells, DataListCell, DataListContent, TextContent, TextList, TextListItem } from '@patternfly/react-core';
+import { IPlanet } from '@app/Types/Planet';
+import { History } from 'history';
+import {
+  DataListItem,
+  DataListItemRow,
+  DataListItemCells,
+  DataListCell,
+  DataListAction,
+  Dropdown,
+  DropdownPosition,
+  KebabToggle,
+  DropdownItem
+} from '@patternfly/react-core';
 
-export interface IPlanestListItemProps {
+interface IPlanestListItemProps {
   planet: IPlanet;
+  history: History;
 }
 
-export const PlanetListItem: React.FC<IPlanestListItemProps> = ({ planet }) => {
+export const PlanetListItem: React.FC<IPlanestListItemProps> = ({ planet, history }) => {
   let [isOpen, setOpen] = React.useState<boolean>(false);
 
   return (
     <DataListItem aria-labelledby="ex-item1" isExpanded={isOpen}>
       <DataListItemRow>
-        <DataListToggle
-          onClick={() => setOpen(!isOpen)}
-          isExpanded={isOpen}
-          id="ex-toggle1"
-          aria-controls="ex-expand1"
-        />
         <DataListItemCells
           dataListCells={[
             <DataListCell key="primary content">
@@ -28,16 +34,28 @@ export const PlanetListItem: React.FC<IPlanestListItemProps> = ({ planet }) => {
             </DataListCell>
           ]}
         />
+        <DataListAction aria-labelledby="ex-item1 ex-action1" id="ex-action1" aria-label="Actions">
+          <Dropdown
+            isPlain
+            position={DropdownPosition.right}
+            isOpen={isOpen}
+            onSelect={() => setOpen(!isOpen)}
+            toggle={<KebabToggle onToggle={() => setOpen(!isOpen)} />}
+            dropdownItems={[
+              <DropdownItem
+                key="action"
+                onClick={() => {
+                  let splitUrl = planet.url.split('/');
+                  history.push('/PlanetDetails/' + splitUrl[splitUrl.length - 2]);
+                }}
+                component="button"
+              >
+                Details
+              </DropdownItem>
+            ]}
+          />
+        </DataListAction>
       </DataListItemRow>
-      <DataListContent aria-label="Primary Content Details" id="ex-expand1" isHidden={!isOpen}>
-        <TextContent>
-          <TextList>
-            {planet.films.map((film, index) => (
-              <TextListItem key={index}>{film}</TextListItem>
-            ))}
-          </TextList>
-        </TextContent>
-      </DataListContent>
     </DataListItem>
   );
-}
+};
