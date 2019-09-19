@@ -3,7 +3,7 @@ import { PageSection, Pagination, PaginationVariant } from '@patternfly/react-co
 import { History } from 'history';
 import { PlanetListing } from '../Planets/PlanetListing';
 import queryString from 'query-string';
-import usePlanetsService from '@app/Service/usePlanetService';
+import { usePlanetsServiceByPage } from '@app/Service/usePlanetService';
 
 interface IPath {
   history: History;
@@ -13,14 +13,14 @@ const Home: React.FC<IPath> = ({ history }) => {
   const [perPage, setPerPage] = useState(10);
 
   const pageParam = parseInt(Object.keys(queryString.parse(history.location.search))[0]);
-  const { result, page } = usePlanetsService(pageParam, 0);
+  const { planetsListResult, page } = usePlanetsServiceByPage(pageParam);
 
   const [itemCount, setItemCount] = useState(0);
   useEffect(() => {
-    if (result.status === 'loaded') {
-      setItemCount(result.payload.count);
+    if (planetsListResult.status === 'loaded') {
+      setItemCount(planetsListResult.payload.count);
     }
-  }, [result, setItemCount]);
+  }, [planetsListResult, setItemCount]);
 
   return (
     <PageSection>
@@ -30,15 +30,17 @@ const Home: React.FC<IPath> = ({ history }) => {
         perPage={perPage}
         perPageOptions={[{ title: '10', value: 10 }]}
         onSetPage={(_evt, value) => {
-          history.push({ pathname: '/Home', search: '?' + value });
+          history.push({ pathname: '/Planets', search: '?' + value });
         }}
         onPerPageSelect={(_evt, value) => {
           setPerPage(value);
         }}
         variant={PaginationVariant.top}
       />
-      {result.status === 'loaded' && <PlanetListing planets={result.payload.results} history={history} />}
-      {result.status !== 'loaded' && result.status}
+      {planetsListResult.status === 'loaded' && (
+        <PlanetListing planets={planetsListResult.payload.results} history={history} />
+      )}
+      {planetsListResult.status !== 'loaded' && planetsListResult.status}
     </PageSection>
   );
 };
