@@ -9,10 +9,21 @@ export interface IPlanetsApiResponse {
   results: IPlanet[];
 }
 
-const usePlanetsService = (page: number, pageId: number) => {
+export const usePlanetsServiceByPage = (page: number) => {
   page = page || 1;
-  const url = pageId > 0 ? `https://swapi.co/api/planets/${pageId}` : `https://swapi.co/api/planets/?page=${page}`;
+  const url = `https://swapi.co/api/planets/?page=${page}`;
+  const planetsListResult = useAPI(url);
+  return { planetsListResult, page };
+};
 
+export const usePlanetServiceByPageId = (pageId: number) => {
+  pageId = pageId || 0; //In case, a page id is 0, SW API returns error 404. Calling API in case of an invalid id is debatable, though.
+  const url = `https://swapi.co/api/planets/${pageId}`;
+  const planetItemResult = useAPI(url);
+  return { planetItemResult, pageId };
+};
+
+const useAPI = (url: string) => {
   const [result, setResult] = useState<Service<IPlanetsApiResponse>>({
     status: 'loading'
   });
@@ -27,7 +38,5 @@ const usePlanetsService = (page: number, pageId: number) => {
     }
   }, [url, setResult]);
 
-  return { result, page };
+  return result;
 };
-
-export default usePlanetsService;
