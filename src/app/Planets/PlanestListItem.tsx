@@ -1,17 +1,7 @@
 import * as React from 'react';
 import { IPlanet } from '@app/Types/Planet';
 import { History } from 'history';
-import {
-  DataListItem,
-  DataListItemRow,
-  DataListItemCells,
-  DataListCell,
-  DataListAction,
-  Dropdown,
-  DropdownPosition,
-  KebabToggle,
-  DropdownItem
-} from '@patternfly/react-core';
+import { DataListItem, DataListItemRow, DataListItemCells, DataListCell, Button } from '@patternfly/react-core';
 
 interface IPlanestListItemProps {
   planet: IPlanet;
@@ -19,10 +9,8 @@ interface IPlanestListItemProps {
 }
 
 export const PlanetListItem: React.FC<IPlanestListItemProps> = ({ planet, history }) => {
-  let [isOpen, setOpen] = React.useState<boolean>(false);
-
   return (
-    <DataListItem aria-labelledby="ex-item1" isExpanded={isOpen}>
+    <DataListItem aria-labelledby="ex-item1" isExpanded={false}>
       <DataListItemRow>
         <DataListItemCells
           dataListCells={[
@@ -34,27 +22,16 @@ export const PlanetListItem: React.FC<IPlanestListItemProps> = ({ planet, histor
             </DataListCell>
           ]}
         />
-        <DataListAction aria-labelledby="ex-item1 ex-action1" id="ex-action1" aria-label="Actions">
-          <Dropdown
-            isPlain
-            position={DropdownPosition.right}
-            isOpen={isOpen}
-            onSelect={() => setOpen(!isOpen)}
-            toggle={<KebabToggle onToggle={() => setOpen(!isOpen)} />}
-            dropdownItems={[
-              <DropdownItem
-                key="action"
-                onClick={() => {
-                  let splitUrl = planet.url.split('/');
-                  history.push('/PlanetDetails/' + splitUrl[splitUrl.length - 2]);
-                }}
-                component="button"
-              >
-                Details
-              </DropdownItem>
-            ]}
-          />
-        </DataListAction>
+        <Button
+          variant="link"
+          onClick={() => {
+            let splitUrl = planet.url.split('/');
+            history.push('/Planets/' + splitUrl[splitUrl.length - 2]);
+          }}
+          isInline
+        >
+          More
+        </Button>
       </DataListItemRow>
     </DataListItem>
   );
