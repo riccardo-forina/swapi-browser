@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
     DataListItem,
     DataListItemRow,
@@ -50,6 +51,10 @@ const Planet: React.FunctionComponent<any> = (props) => {
                         ))}
                     </TextList>
                 </TextContent>
+                <br/>
+                {props.planet.url && 
+                    <Link to={"/planets/" + props.planet.url.split("/")[ props.planet.url.split("/").length - 2]}>Load More</Link>
+                }
             </DataListContent>
         </DataListItem>
     );

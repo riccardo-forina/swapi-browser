@@ -8,6 +8,7 @@ import { PlanetList } from '@app/PlanetList/PlanetList';
 import { NotFound } from '@app/NotFound/NotFound';
 import DocumentTitle from 'react-document-title';
 import { LastLocationProvider, useLastLocation } from 'react-router-last-location';
+import { PlanetDetail } from '@app/PlanetDetail/PlanetDetail';
 let routeFocusTimer: number;
 const getSupportModuleAsync = () => {
   return () => import(/* webpackChunkName: 'support' */ '@app/Support/Support');
@@ -99,20 +100,29 @@ const routes: IAppRoute[] = [
 
 const AppRoutes = () => (
   <LastLocationProvider>
-    <Switch>
-      {routes.map(({ path, exact, component, title, isAsync, icon }, idx) => (
+      <Switch>
+        {routes.map(({ path, exact, component, title, isAsync, icon }, idx) => (
+          <RouteWithTitleUpdates
+            path={path}
+            exact={exact}
+            component={component}
+            key={idx}
+            icon={icon}
+            title={title}
+            isAsync={isAsync}
+          />
+        ))}
         <RouteWithTitleUpdates
-          path={path}
-          exact={exact}
-          component={component}
-          key={idx}
-          icon={icon}
-          title={title}
-          isAsync={isAsync}
+          path="/planets/:id"
+          exact={true}
+          icon={null}
+          label="planet detail"
+          component={PlanetDetail}
+          title="Planet"
+          isAsync={true}
         />
-      ))}
-      <RouteWithTitleUpdates component={NotFound} title={'404 Page Not Found'} />
-    </Switch>
+        <RouteWithTitleUpdates component={NotFound} title={'404 Page Not Found'} />
+      </Switch>
   </LastLocationProvider>
 );
 
