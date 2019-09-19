@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { PageSection } from '@patternfly/react-core';
-import usePlanetsService from '@app/Service/usePlanetService';
+import { usePlanetServiceByPageId } from '@app/Service/usePlanetService';
 import { DataListItem, DataListItemRow, DataListItemCells, DataListCell, DataList } from '@patternfly/react-core';
 
 export const PlanetsListItemDetail: React.FC<any> = props => {
-  const planetId = parseInt(props.computedMatch.params.id) | 0;
-  const { result, page } = usePlanetsService(0, planetId);
+  const planetId = parseInt(props.computedMatch.params.id);
+  const { planetItemResult, pageId } = usePlanetServiceByPageId(planetId);
 
   return (
     <PageSection>
-      {result.status !== 'loaded' && result.status}
+      {planetItemResult.status !== 'loaded' && planetItemResult.status}
       <DataList aria-label="Simple data list example">
-        {result.status === 'loaded' && <PlanetItemDetail planetDetail={result.payload} />}
+        {planetItemResult.status === 'loaded' && <PlanetItemDetail planetDetail={planetItemResult.payload} />}
       </DataList>
     </PageSection>
   );
