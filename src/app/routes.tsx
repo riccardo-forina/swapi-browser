@@ -94,7 +94,7 @@ const routes: IAppRoute[] = [
     icon: null,
     isAsync: true,
     label: 'Planets',
-    path: '/Home',
+    path: '/Planets',
     title: 'Planet Listings Home'
   }
 ];
@@ -113,16 +113,16 @@ const AppRoutes = () => (
           isAsync={isAsync}
         />
       ))}
-      {/* <RouteWithTitleUpdates component={NotFound} title={'404 Page Not Found'} /> */}
       <RouteWithTitleUpdates
         component={PlanetsListItemDetail}
         exact={true}
         icon={null}
         isAsync={true}
         label="Planet Details"
-        path="/PlanetDetails/:id"
+        path="/Planets/:id"
         title="Planet Details"
       />
+      <RouteWithTitleUpdates component={NotFound} title={'404 Page Not Found'} />
     </Switch>
   </LastLocationProvider>
 );
