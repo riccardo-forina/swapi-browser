@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Service } from '../Types/Service';
 import { IPlanet } from '../Types/Planet';
 
@@ -28,15 +28,28 @@ const useAPI = (url: string) => {
     status: 'loading'
   });
 
+  const callApi = useCallback(
+    async function() {
+      setResult({ status: 'loading' });
+      try {
+        const response = await fetch(url);
+        if (response.status !== 200) {
+          throw new Error(`Api error(${response.status})`);
+        }
+        const payload = await response.json();
+        setResult({ status: 'loaded', payload });
+      } catch (error) {
+        setResult({ status: 'error', error });
+      }
+    },
+    [url, setResult]
+  );
+
   useEffect(() => {
     if (url) {
-      setResult({ status: 'loading' });
-      fetch(url)
-        .then(response => response.json())
-        .then(response => setResult({ status: 'loaded', payload: response }))
-        .catch(error => setResult({ status: 'error', error }));
+      callApi();
     }
-  }, [url, setResult]);
+  }, [url, callApi]);
 
   return result;
 };
