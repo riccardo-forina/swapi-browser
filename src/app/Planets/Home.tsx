@@ -37,9 +37,7 @@ const Home: React.FC<IPath> = ({ history }) => {
         }}
         variant={PaginationVariant.top}
       />
-      {planetsListResult.status === 'loaded' && (
-        <PlanetListing planets={planetsListResult.payload.results} history={history} />
-      )}
+      {planetsListResult.status === 'loaded' && <PlanetListing planets={planetsListResult.payload.results} />}
       {planetsListResult.status !== 'loaded' && planetsListResult.status}
     </PageSection>
   );
