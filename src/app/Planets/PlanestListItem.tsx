@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { IPlanet } from '@app/Types/Planet';
-import { History } from 'history';
 import { DataListItem, DataListItemRow, DataListItemCells, DataListCell, Button } from '@patternfly/react-core';
+import { Link } from 'react-router-dom';
 
 interface IPlanestListItemProps {
   planet: IPlanet;
-  history: History;
 }
 
-export const PlanetListItem: React.FC<IPlanestListItemProps> = ({ planet, history }) => {
+export const PlanetListItem: React.FC<IPlanestListItemProps> = ({ planet }) => {
+  const splitUrl = planet.url.split('/');
   return (
     <DataListItem aria-labelledby="ex-item1" isExpanded={false}>
       <DataListItemRow>
@@ -22,7 +22,8 @@ export const PlanetListItem: React.FC<IPlanestListItemProps> = ({ planet, histor
             </DataListCell>
           ]}
         />
-        <Button
+        <Link to={'/Planets/' + splitUrl[splitUrl.length - 2]}>More</Link>
+        {/* <Button
           variant="link"
           onClick={() => {
             let splitUrl = planet.url.split('/');
@@ -31,7 +32,7 @@ export const PlanetListItem: React.FC<IPlanestListItemProps> = ({ planet, histor
           isInline
         >
           More
-        </Button>
+        </Button> */}
       </DataListItemRow>
     </DataListItem>
   );
