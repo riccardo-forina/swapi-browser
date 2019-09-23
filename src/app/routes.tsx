@@ -5,6 +5,8 @@ import { DynamicImport } from '@app/DynamicImport';
 import { accessibleRouteChangeHandler } from '@app/utils/utils';
 import { Dashboard } from '@app/Dashboard/Dashboard';
 import { NotFound } from '@app/NotFound/NotFound';
+import { Home } from '@app/Planets/Home';
+import { PlanetsListItemDetail } from '@app/Planets/PlanetsListItemDetail';
 import DocumentTitle from 'react-document-title';
 import { LastLocationProvider, useLastLocation } from 'react-router-last-location';
 let routeFocusTimer: number;
@@ -77,14 +79,23 @@ const routes: IAppRoute[] = [
     path: '/',
     title: 'Main Dashboard Title'
   },
+  // {
+  //   component: Support,
+  //   exact: true,
+  //   icon: null,
+  //   isAsync: true,
+  //   label: 'Support',
+  //   path: '/support',
+  //   title: 'Support Page Title'
+  // },
   {
-    component: Support,
+    component: Home,
     exact: true,
     icon: null,
     isAsync: true,
-    label: 'Support',
-    path: '/support',
-    title: 'Support Page Title'
+    label: 'Planets',
+    path: '/Planets',
+    title: 'Planet Listings Home'
   }
 ];
 
@@ -102,6 +113,15 @@ const AppRoutes = () => (
           isAsync={isAsync}
         />
       ))}
+      <RouteWithTitleUpdates
+        component={PlanetsListItemDetail}
+        exact={true}
+        icon={null}
+        isAsync={true}
+        label="Planet Details"
+        path="/Planets/:id"
+        title="Planet Details"
+      />
       <RouteWithTitleUpdates component={NotFound} title={'404 Page Not Found'} />
     </Switch>
   </LastLocationProvider>
