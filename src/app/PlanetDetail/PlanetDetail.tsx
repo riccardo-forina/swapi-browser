@@ -12,11 +12,11 @@ import {
     Text,
     TextVariants
 } from '@patternfly/react-core';
-import { Link } from 'react-router-dom';
+import { Link, BrowserRouter as Router } from 'react-router-dom';
 import axios from "axios";
 
 const PlanetDetail: React.FunctionComponent<any> = (props) => {
-    const planetNo = props.computedMatch.params.id;
+    const planetNo = props.computedMatch.params.id || 1;
     const signal = axios.CancelToken.source();
     const [planetDetails, setDetails] = useState({});
     useEffect(() => {
