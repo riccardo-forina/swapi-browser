@@ -14,20 +14,54 @@ import {
 } from '@patternfly/react-core';
 import { Link, BrowserRouter as Router } from 'react-router-dom';
 import axios from "axios";
+import { isTemplateElement } from '@babel/types';
+
+
+export interface IPlanet {
+    name: string;
+    population: string;
+    films: string[];
+    rotation_period: string;
+    orbital_period: string;
+    diameter: string;
+    climate: string;
+    gravity: string;
+    terrain: string;
+    surface_water: string;
+    created: string;
+    edited: string;
+    residents: string[];
+    url: string;
+}
+
+const initialPlanet:IPlanet = {
+    name: "",
+    population: "",
+    films: [],
+    rotation_period: "",
+    orbital_period: "",
+    diameter: "",
+    climate: "",
+    gravity: "",
+    terrain: "",
+    surface_water: "",
+    created: "",
+    edited: "",
+    residents: [],
+    url: ""
+}
 
 const PlanetDetail: React.FunctionComponent<any> = (props) => {
     const planetNo = props.computedMatch.params.id || 1;
     const signal = axios.CancelToken.source();
-    const [planetDetails, setDetails] = useState({});
+    const [planetDetails, setDetails] = useState<IPlanet>(initialPlanet);
     useEffect(() => {
         const url: string = "https://swapi.co/api/planets/" + planetNo;
-        console.log(url);
         axios
             .get(url, {
                 cancelToken: signal.token,
             })
             .then(({ data }) => {
-                console.log(data);
                 setDetails(data);
             });
     }, []);
@@ -80,7 +114,7 @@ const PlanetDetail: React.FunctionComponent<any> = (props) => {
                             <CardHeader><b>Movies featuring this planet</b></CardHeader>
                             <CardBody>
                                 <List>
-                                    {planetDetails.films.map((film, idx) => {
+                                    {planetDetails.films.map((film:string, idx:number) => {
                                         return(
                                             <ListItem>
                                                 <Link to={film} key={idx}>{film}</Link>
@@ -96,7 +130,7 @@ const PlanetDetail: React.FunctionComponent<any> = (props) => {
                             <CardHeader><b>Characters from this planet</b></CardHeader>
                             <CardBody>
                                 <List>
-                                    {planetDetails.residents.map((resident, idx) => {
+                                    {planetDetails.residents.map((resident:string, idx:number) => {
                                         return(
                                             <ListItem key={idx}>
                                                 <Link to={resident} key={idx}>{resident}</Link>

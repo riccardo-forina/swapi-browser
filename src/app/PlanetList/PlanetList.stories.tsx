@@ -3,12 +3,14 @@ import { storiesOf } from '@storybook/react';
 import { PlanetList } from '@app/PlanetList/PlanetList';
 import StoryRouter from 'storybook-react-router';
 
-const stories = storiesOf('PlanetList', module).addDecorator(StoryRouter());
+const stories = storiesOf('PlanetList', module);
 
-// stories.add(
-//   'PlanetList',
-//   () => {
-//     return <PlanetList/>
-//   },
-//   { info: { inline: true } }
-// );
+stories
+  .addDecorator(StoryRouter())
+  .add(
+  'PlanetList',
+  () => {
+    return <PlanetList/>
+  },
+  { info: { inline: true } }
+);
